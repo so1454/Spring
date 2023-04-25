@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace = "kr.board.mapper.BoardMapper"> <!-- 변수명이 같아도 namespace로 구분을 지어줄 수 있음 -->
+	
+	<!-- 전체 게시물을 가져오는 SQL 쿼리를 짜야한다. -->
+	<select id="getLists" resultType = "kr.board.entity.Board"> <!-- id는 dao의 메소드 이름이랑 동일해야됨 
+													resultType은 dto를 가져와줘야함 -->
+		select * from reply order by bgroup desc ,bseq asc
+	</select>
+	
+
+	
+	<insert id ="register" parameterType = "kr.board.entity.Board">
+		<selectKey keyProperty ="bgroup" resultType="kr.board.entity.Board" order = "BEFORE"> <!-- -->
+			select IFNULL(max(bgroup)+1, 0) as bgroup from reply; 
+		</selectKey>
+		
+		insert into reply (username,title,content,writer,bgroup,bseq,blevel,bdelete)
+		values(#{username},#{title},#{content},#{writer},#{bgroup},0,0,0)
+	
+	</insert>
+	
+	<select id="get" resultType = "kr.board.entity.Board"> <!-- parameterType = "int"로 
+															원래 파라미터도 적어주는데 리턴이 한개밖에 없으니까 생략가능 -->
+		select * from reply where num = #{num}
+	</select>
+	
+	<update id = "modify" parameterType = "kr.board.entity.Board">
+	
+		update reply set title = #{title}, content = #{content} where num = #{num}
+		
+	
+	</update>
+	
+	<update id = "replySeqUp" parameterType = "kr.board.entity.Board"> <!-- 이 파라미터 안에 있는건 부모의 것 #{부모의 것} -->
+		update reply set bseq = bseq +1 where bgroup = #{bgroup} and bseq > #{bgroup}
+	</update>
+	
+	<insert id = "replyInsert" parameterType = "kr.board.entity.Board">
+		insert into reply(username,title,content,writer,bgroup,bseq,blevel,bdelete)
+		values(#{username},#{title},#{content},#{writer},#{bgroup},#{bseq},#{blevel},0)
+	</insert>
+	
+</mapper>
+
+
+

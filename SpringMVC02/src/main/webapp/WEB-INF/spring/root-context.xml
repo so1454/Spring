@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- The configuration(연결) XML file -->
+	<!-- HikariCP(히카리) API -->
+	
+	<!-- 
+	HikariConfig hikariCOnfig = new HikariConfig();
+	hikariConfig.setXXXX(jdbc driver); 
+	hikariConfig.setXXXX(jdburl); 
+	hikariConfig.setXXXX(username); 
+	hikariConfig.setXXXX(password); 
+	-->
+	
+	
+	
+	<!-- bean=> 객체를 생성하는! -->
+	<bean id = "hikariConfig" class = "com.zaxxer.hikari.HikariConfig">
+	<!--bean의 클래스를 적을때 가지고오고자 하는거 오른쪽 클릭 copy Qualified Name눌러서 가져와주기(정확하게 가져오기 가능)-->
+		
+		<!-- setter를 호출하려면 property 필요 -->
+		<property name="driverClassName" value = "com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value = "jdbc:mysql://localhost:3306/com"/>
+		<!-- set형태로 수정이 가능한 형태! -->
+		<property name="username" value = "com"/>
+		<property name="password" value = "com01"/>
+		
+	</bean>
+	
+	<!-- id는 클래스이름을 가져와서 맨 앞글자를 소문자로 해주면 생각안해도 되고 깔끔 -->
+	<bean id = "dataSource" class = "com.zaxxer.hikari.HikariDataSource">
+		<!-- 생성자를 불러서 위랑 연결을 시켜줄꺼임 ref는 생성자 HikariDataSource(여기에 들어갈 값)  -->
+		<constructor-arg ref = "hikariConfig" />
+	
+	</bean>
+	<!--  SqlSessionFactory를 만들기(SqlSessionFactoryBean) -->
+	<!-- mybatis-spring Api필요    -->
+	<bean id ="sqlSessionFactory" class = "org.mybatis.spring.SqlSessionFactoryBean">
+		<property name = "dataSource" ref = "dataSource" ></property><!-- 이걸로 위에 있는 것과 연결해줌 -->
+	
+	</bean>
+	
+	<!-- 인터페이스 매퍼의 위치를 알려줘야함 -->
+	<!-- Mapper interface의 위치를 등록하기 -->
+	<!-- 패키지 전부를 메모리에 연결시켜줌(하나하나 연결안해줘도됨!) -->
+	<mybatis-spring:scan base-package = "kr.board.mapper" />
+	
+	
+	<!-- db 세팅 끝 -->	
+</beans>
