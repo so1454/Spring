@@ -9,7 +9,7 @@
     
 <!-- contextpath를 가져오는 방법 -->
 <c:set var ="cpath" value = "${pageContext.request.contextPath}"/> <!-- /root 그대로 가져와짐 -->
- 
+   
  
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,6 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  
   <link rel = "stylesheet" href="${cpath}/resources/css/style.css">
 </head>
 <body>
@@ -49,29 +48,29 @@
     			<div class = "card">
 					<div class = "card-body">
 						<h4 class = "card-title">BOARD</h4>
-						<p class = "card-text">답글쓰기</p>
-							<form action = "${cpath}/reply" method = "post">
-							<input type = "hidden" name ="num" value ="${vo.num}"/> <!-- 부모글의 넘버를 넘겨야지 -->
-							<input type = "hidden" name ="username" value ="${mvo.username}"/> <!-- 부모글의 작성자(id)를 넘겨야지 -->
+						<p class = "card-text">게시판 글쓰기</p>
+							<form action="${cpath}/register" method = "post">
+								<input type = "hidden" name ="username" value ="${mvo.username}"/>
 								<div class = "form-group">
-									<label>제목 : </label>
-									<input type = "text" name = "title" class = "form-control" value = "${vo.title}"/>
+									<label>제목</label>
+										<input type = "text" name = "title" id = "title" class = "form-control"/>
 								</div>
 								<div class = "form-group">
-									<label>답글 : </label>									
-									<textarea rows = "10" name = "content" class= "form-control"></textarea>
+									<label>내용</label>
+										<textarea rows="10" name = "content" class = "form-control"></textarea>
 								</div>
+								
 								<div class = "form-group">
-									<label>작성자 : </label>
-									<input type = "text" name = "writer" class = "form-control" value = "${mvo.name}" readonly="readonly"/>
+									<label>작성자</label>
+										<input type = "text" name = "writer" id = "writer" class = "form-control" value= "${mvo.name}" readonly="readonly"/>
+																	<!-- readonly는 읽기만 가능 쓰기 불가하다는 것 -->
 								</div>
-							<button type = "button" class="btn btn-primary btn-sm">목록</button>
-							<button type = "submit" class="btn btn-primary btn-sm">답글</button>
-							<button type = "reset" class="btn btn-primary btn-sm" >취소</button>
+								<br>
+								<button  type = "button" class="btn btn-primary btn-sm" >목록</button>
+								<button  type = "submit" class="btn btn-primary btn-sm" >등록</button>
+								<button  type = "reset" class="btn btn-primary btn-sm">취소</button>
 							</form>
-					
-					</div>
-
+						</div>
 				</div>
 			</div>
     		<div class = "col-lg-3">

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.board.entity.Board;
+import kr.board.entity.Criteria;
 import kr.board.entity.Member;
 
 // 요런 흐름으로 배우고 있다.
@@ -18,7 +19,7 @@ public interface BoardMapper { //Dao말고 연결한다는거 -> mapper라고 �
 
 	// 데이터베이스 연결작업은 여기서 (X) -> 설정에서 해줄꺼임
 	// 게시판 전체 리스트 가져오기
-	public List<Board> getLists();
+	public List<Board> getLists(Criteria cri);
 	
 		// 연결 객체(Connection, = mybatis -> sqlSession)를 가져오기
 		// SQL문장 전송 : PreparedStatement(?) -> #{ }
