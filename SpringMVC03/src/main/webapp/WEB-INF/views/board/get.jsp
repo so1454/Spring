@@ -129,6 +129,9 @@
 								<!-- 현재 게시물의 번호를 hidden으로 담아줌(쿼리스트링 대신 위에서 사용할 친구) 
 								얘를 사용하면 쿼리스트링 사용없이 더 깔끔하게 넘겨줄 수 있다.-->
 								<input type = "hidden" name ="num" id = "num" value ="${vo.num}"/>
+								<input type = "hidden" name ="page" value ="${cri.page}"/>
+								
+								
 							</form>
 						
 					</div>

@@ -51,6 +51,7 @@
 						<h4 class = "card-title">BOARD</h4>
 						<p class = "card-text">답글쓰기</p>
 							<form action = "${cpath}/reply" method = "post">
+							<input type = "hidden" name ="page" value ="${cri.page}"/>
 							<input type = "hidden" name ="num" value ="${vo.num}"/> <!-- 부모글의 넘버를 넘겨야지 -->
 							<input type = "hidden" name ="username" value ="${mvo.username}"/> <!-- 부모글의 작성자(id)를 넘겨야지 -->
 								<div class = "form-group">
@@ -65,7 +66,7 @@
 									<label>작성자 : </label>
 									<input type = "text" name = "writer" class = "form-control" value = "${mvo.name}" readonly="readonly"/>
 								</div>
-							<button type = "button" class="btn btn-primary btn-sm">목록</button>
+							<button type = "button" class="btn btn-primary btn-sm" onclick = "location.href ='${cpath}/list?&page=${cri.page}'">목록</button>
 							<button type = "submit" class="btn btn-primary btn-sm">답글</button>
 							<button type = "reset" class="btn btn-primary btn-sm" >취소</button>
 							</form>

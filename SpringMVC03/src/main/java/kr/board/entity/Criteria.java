@@ -13,6 +13,7 @@ public class Criteria {
 		this.page = 1;
 		this.perPageNum = 5; // 한 페이지에 10개씩 보여줄꺼다.(추후 숫자 조정)
 	}
+	
 	// 현재 페이지의 게시글의 시작번호 
 	
 	public int getPageStart() {	//  1page  2page  3page

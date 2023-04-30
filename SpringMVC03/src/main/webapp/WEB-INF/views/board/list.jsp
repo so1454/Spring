@@ -22,9 +22,19 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  
-	
+
 	<script type="text/javascript">
+	  	$(document).ready(function(){
+	  		$(".pagination a").on("click", 
+	  			function(e){
+	  				e.preventDefault(); // a tag의 고유한 기능을 막는 방법
+	  		});
+	  			
+	  		
+	  	  	
+	  	});
+	
+	
 		function goMsg(){
 			$("#myModal").modal("show");			
 			
@@ -78,7 +88,7 @@
 											<!-- 대댓글 하나이면 한번/그 밑에 하나 더 써지면 들여쓰기 한번 더 이런식으로 만들어주기 -->
 											<c:if test = "${vo.blevel==0}"> <!-- 0 -->
 												<c:if test = "${vo.bdelete == 0}">
-													<a href = "${cpath}/get?num=${vo.num}">${vo.title}</a>
+													<a href = "${cpath}/get?num=${vo.num}&page=${pm.cri.page}">${vo.title}</a>
 												</c:if>
 												
 												<c:if test = "${vo.bdelete == 1}">
@@ -98,7 +108,7 @@
 												<i class = "bi bi-arrow-return-right"></i>
 												
 												<c:if test = "${vo.bdelete==0}">
-													<a href = "${cpath}/get?num=${vo.num}">[Re] ${vo.title}</a>
+													<a href = "${cpath}/get?num=${vo.num}&page=${pm.cri.page}">[Re] ${vo.title}</a>
 												</c:if>
 												
 												<c:if test = "${vo.bdelete == 1}">
@@ -118,6 +128,27 @@
 								
 								</tbody>
 							</table>
+							
+							
+							<!-- 페이지 리스트 출력 시작 -->
+							<ul class="pagination justify-content-center">
+								<!-- 페이지가 pageEnd의 이상인 True인 경우만 '이전'버튼이 나와야하니까 if문으로 -->
+								<c:if test = "${pm.prev}">
+									<li class = "page-item"><a class="page-link" href= "${pm.startPage-1}">◀</a></li>
+								</c:if>
+   								 <c:forEach var= "pageNum" begin = "${pm.startPage}" end = "${pm.endPage}">
+	   								 <li class="page-item ${pm.cri.page == pageNum ? 'active' : ''}">
+	   								 <a class="page-link" href= "${pageNum}">${pageNum}</a>
+	   								 </li>
+   								 </c:forEach>
+   								<c:if test = "${pm.next}">
+									<li class = "page-item"><a class="page-link" href= "${pm.endPage+1}">▶</a></li>
+								</c:if>
+  							</ul>					
+							<!-- 페이지 리스트 출력 끝 -->
+							
+							
+							
 							<!-- contextpath를 가져오는 방법 
 							위에 c:set으로 path를 가져와줄 수 있도록 함 
 							여기에 있는 로케이션 href에서 원래'/mvc01/register'이건데

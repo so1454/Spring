@@ -66,6 +66,9 @@ public interface BoardMapper { //Dao말고 연결한다는거 -> mapper라고 �
 	
 	public void replyInsert(Board vo);
 	
+	@Select("select count(*) from reply")
+	public int totalCount();
+	
 }
 
 
