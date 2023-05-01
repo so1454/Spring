@@ -25,11 +25,28 @@
 
 	<script type="text/javascript">
 	  	$(document).ready(function(){
-	  		$(".pagination a").on("click", 
+	  		var pageForm= $("#pageForm")  // 폼의 아이디를 담아준 변수
+	  		
+	  		$(".pagination a").on("click",  // 페이징의 앵커태그 클릭 시 
 	  			function(e){
-	  				e.preventDefault(); // a tag의 고유한 기능을 막는 방법
+	  				e.preventDefault(); // a tag의 고유한 기능을 막는 방법(이게 없으면 a태그의 기능으로 넘어가버림)
+	  				var page = $(this).attr("href")  // href라는 속성을 가지고옴
+	  				// location.href = "${cpath}/list?page"+page+"$aaa=aaa"; / form 이용
+	  				$("#page").val(page);  // hidden
+	  				
+	  				pageForm.submit(); 	// 폼의 아이디를 담아준 변수를 이용해서 폼을 전송
+	  				
 	  		});
-	  			
+	  			// 상세보기로 이동
+	  			$(".move").on("click", function(e){
+	  				e.preventDefault();
+	  				var num = $(this).attr("href");
+	  				var tag = "<input type = 'hidden' name = 'num' value = '"+num+"'>";
+	  				pageForm.append(tag);
+	  				pageForm.attr("action", "${cpath}/get");
+	  				pageForm.attr("method","get");
+	  				pageForm.submit(); // 폼을 전송
+	  			});
 	  		
 	  	  	
 	  	});
@@ -37,7 +54,7 @@
 	
 		function goMsg(){
 			$("#myModal").modal("show");			
-			
+
 		}
 	</script>
 
@@ -88,7 +105,7 @@
 											<!-- 대댓글 하나이면 한번/그 밑에 하나 더 써지면 들여쓰기 한번 더 이런식으로 만들어주기 -->
 											<c:if test = "${vo.blevel==0}"> <!-- 0 -->
 												<c:if test = "${vo.bdelete == 0}">
-													<a href = "${cpath}/get?num=${vo.num}&page=${pm.cri.page}">${vo.title}</a>
+													<a class = "move" href = "${vo.num}">${vo.title}</a>
 												</c:if>
 												
 												<c:if test = "${vo.bdelete == 1}">
@@ -108,7 +125,7 @@
 												<i class = "bi bi-arrow-return-right"></i>
 												
 												<c:if test = "${vo.bdelete==0}">
-													<a href = "${cpath}/get?num=${vo.num}&page=${pm.cri.page}">[Re] ${vo.title}</a>
+													<a class = "move" href = "${vo.num}">[Re] ${vo.title}</a>
 												</c:if>
 												
 												<c:if test = "${vo.bdelete == 1}">
@@ -145,6 +162,9 @@
 									<li class = "page-item"><a class="page-link" href= "${pm.endPage+1}">▶</a></li>
 								</c:if>
   							</ul>					
+  							<form id = "pageForm" action = "${cpath}/list" method = post>
+  								<input type = "hidden" id = page name = page value = "${pm.cri.page}"/>
+  							</form>
 							<!-- 페이지 리스트 출력 끝 -->
 							
 							
