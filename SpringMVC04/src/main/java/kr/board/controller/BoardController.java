@@ -94,6 +94,10 @@ public class BoardController {
 	public String remove(int num, Criteria cri , RedirectAttributes rttr) {
 		mapper.remove(num);
 		rttr.addAttribute("page",cri.getPage());
+		rttr.addAttribute("type",cri.getType());
+		rttr.addAttribute("keyword",cri.getKeyword());
+		
+		
 		return "redirect:/list";
 	}
 	
@@ -116,6 +120,8 @@ public class BoardController {
 		
 		rttr.addAttribute("num",vo.getNum()); //num이 get 방식으로 넘어간다 
 		rttr.addAttribute("page",cri.getPage());
+		rttr.addAttribute("type",cri.getType());
+		rttr.addAttribute("keyword",cri.getKeyword());
 		//return "redirect:/get?num="+vo.getNum() ; " 원래 이렇게 길게 적을꺼 위에처럼 num을 getnum으로 받는다
 //													이런식으로 잡아주니까 위에서 다 쓰고 리턴값은 저것만 쓰면됨
 		
@@ -157,6 +163,9 @@ public class BoardController {
 		
 		// 답글 달고 현재페이지 유지시킬 수 있게 해주기
 		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("type",cri.getType());
+		rttr.addAttribute("keyword",cri.getKeyword());
+		
 		
 		return "redirect:/list";
 	}

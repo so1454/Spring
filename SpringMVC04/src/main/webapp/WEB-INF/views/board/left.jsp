@@ -8,39 +8,58 @@
 <c:set var ="cpath" value = "${pageContext.request.contextPath}"/> <!-- /root 그대로 가져와짐 -->
 
 	<div class = "card" style = "min-height:500px; max-height : 1000px;">
-		<div class = "card-body">
-		
-		<c:if test ="${empty mvo}">  <!-- 회원인증이 실패한사람 -->
-		
-			<h4 class= "card-title">GUEST</h4>
-			<p class = "card-text">회원님! Welcome</p>
-			<form action ="${cpath}/login" mehtod = "post">
-				<div class="form-group">
-			
-					<label>아이디:</label>
-					<input type = "text" name = "username" class = "form-control"/>
+		<div class = "row">
+			<div class = "col-lg-12">
+				<div class = "card-body">
+					<c:if test ="${empty mvo}">  <!-- 회원인증이 실패한사람 -->
+					
+						<h4 class= "card-title">GUEST</h4>
+						<p class = "card-text">회원님! Welcome</p>
+						<form action ="${cpath}/login" mehtod = "post">
+							<div class="form-group">
+						
+								<label>아이디:</label>
+								<input type = "text" name = "username" class = "form-control"/>
+							</div>
+							<div class="form-group">
+						
+								<label>비밀번호 : </label>
+								<input type = "password" name = "password" class = "form-control"/>
+							</div>
+							<button class = "btn btn-sm btn-primary form-control">로그인</button>
+						</form>
+						
+					</c:if>
+					<c:if test="${!empty mvo}">
+						<h4 class= "card-title">${mvo.name}</h4>
+						<p class = "card-text"> 회원님! Welcome</p>
+						<form action ="${cpath}/logout" method = "post">
+						<button class = "btn btn-sm btn-primary form-control">로그아웃</button>
+						</form>
+						
+					</c:if>
 				</div>
-				<div class="form-group">
-			
-					<label>비밀번호 : </label>
-					<input type = "password" name = "password" class = "form-control"/>
+			</div> <!--  col_end -->
+		</div>  <!-- row_end -->
+		
+		
+		<div class = "row"> <!-- 새로운 row시작 -->
+		<div class="col-lg-12">
+			<div class = "card-body">
+				
+						<p class = "card-text">MAP VIEW</p>
+						<div class="input-group mb-3">
+					       <input type="text" class="form-control" id="address" placeholder="Search"/>
+					       <div class="input-group-append">
+					         <a type="button" class="btn btn-secondary" id = "mapsearch">Go</a>
+					       </div>
+					    </div>
+				    <div id="map" style="width:100%; height: 150px"></div>
 				</div>
-				<button class = "btn btn-sm btn-primary form-control">로그인</button>
-			</form>
-			
-			</c:if>
-			<c:if test="${!empty mvo}">
-				<h4 class= "card-title">${mvo.name}</h4>
-				<p class = "card-text"> 회원님! Welcome</p>
-				<form action ="${cpath}/logout" method = "post">
-				<button class = "btn btn-sm btn-primary form-control">로그아웃</button>
-				</form>
-			
-			</c:if>
-			
-			
-			
-		</div>
+			</div> <!-- col_end -->
+		</div> <!-- row_end -->
+		
+		
 	</div>
 
 

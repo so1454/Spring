@@ -23,6 +23,21 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
   <link rel = "stylesheet" href="${cpath}/resources/css/style.css">
+  
+    <script type="text/javascript">
+  	$(document).ready(function(){
+  		
+  		$("#list").click(function(){  // 함수안에 함수가 있는 것을 익명함수라고함
+  			var frm = $("#frm");
+  			frm.attr("action","${cpath}/list"); // ?num=1&page=1&type=writer&keyword=XXX 이런식으로 넘어감
+  			frm.submit();
+  			
+  		});
+
+  	});
+  </script>
+  
+  
 </head>
 <body>
  
@@ -50,13 +65,17 @@
 					<div class = "card-body">
 						<h4 class = "card-title">BOARD</h4>
 						<p class = "card-text">답글쓰기</p>
-							<form action = "${cpath}/reply" method = "post">
+							<form id = "frm" action = "${cpath}/reply" method = "post">
 							<input type = "hidden" name ="page" value ="${cri.page}"/>
 							<input type = "hidden" name ="num" value ="${vo.num}"/> <!-- 부모글의 넘버를 넘겨야지 -->
 							<input type = "hidden" name ="username" value ="${mvo.username}"/> <!-- 부모글의 작성자(id)를 넘겨야지 -->
+							<input type = "hidden" name = "type" value = "${cri.type}"/>
+							<input type = "hidden" name = "keyword" value = "${cri.keyword}"/>
+								
 								<div class = "form-group">
 									<label>제목 : </label>
 									<input type = "text" name = "title" class = "form-control" value = "${vo.title}"/>
+									
 								</div>
 								<div class = "form-group">
 									<label>답글 : </label>									
@@ -66,7 +85,7 @@
 									<label>작성자 : </label>
 									<input type = "text" name = "writer" class = "form-control" value = "${mvo.name}" readonly="readonly"/>
 								</div>
-							<button type = "button" class="btn btn-primary btn-sm" onclick = "location.href ='${cpath}/list?&page=${cri.page}'">목록</button>
+							<button id = list type = "button" class="btn btn-primary btn-sm">목록</button>
 							<button type = "submit" class="btn btn-primary btn-sm">답글</button>
 							<button type = "reset" class="btn btn-primary btn-sm" >취소</button>
 							</form>

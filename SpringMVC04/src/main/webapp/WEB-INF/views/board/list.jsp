@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <link rel = "stylesheet" href="${cpath}/resources/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"> 
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -47,13 +47,96 @@
 	  				pageForm.attr("method","get");
 	  				pageForm.submit(); // 폼을 전송
 	  			});
+	  		// 책 검색 버튼이 클릭되었을때 처리
+			$("#search").click(function(){
+			         var bookname= $("#bookname").val();
+			         if(bookname ==""){
+			            alert("책 제목을 입력하세요.");
+			            return false;
+			         }
+			         // kakao Daum OpenAPI 이용해서 책을 검색 (요청---AJAX---> 응답)
+			         $.ajax({
+			            url:"https://dapi.kakao.com/v3/search/book?target=title",  
+			            headers : {"Authorization":"KakaoAK 5774cbdd574806114184a39be7c839b8"},  // 내 토큰 값 적어주기
+			            type:"GET",
+			            data:{"query":bookname},  // 
+			            dataType:"json",
+			            success : bookPrint,  // callback함수
+			            error : function(){alert("error");}
+			         });
+			         
+			  });
 	  		
-	  	  	
-	  	});
+	  		
+			// 주소를 입력하여 위도와 경도를 뽑아서 지도를 출력하는 기능 만들기
+	  		
+			$("#mapsearch").click(function(){
+		         var address=$("#address").val();
+		         if(address==""){
+		            alert("주소를 입력하세요.");
+		            return false;
+		         }
+		         $.ajax({
+		            url:"https://dapi.kakao.com/v2/local/search/address.json",
+		            headers : {"Authorization":"KakaoAK d4b0460dee59cba9c2e29c509d714add"},
+		            type:"GET",
+		            data:{"query": address},
+		            dataType:"json",
+		            success : mapPrint,
+		            error : function(){alert("error");}
+		         });
+		      });
+		         
+		   
+		   });
+		   function mapPrint(data){
+		      console.log(data);
+		      var x= data.documents[0].x; //경도
+		      var y = data.documents[0].y; // 위도
+		      console.log(x);
+		      console.log(y);
+		   }
 	
-	
+	  	function bookPrint(data){  // 위 callback함수를 밑에 만들어줌
+	  		console.log(data);  // 구조 어떻게 프린트 되는지 확인
+	  		var bList = "<table class = 'table table-hover'>";
+	  		bList += "<thead>";
+	  		
+	  		bList +="<tr>";
+	  		bList += "<th>책이미지</th>"
+	  		bList += "<th>제목</th>"
+	  		bList += "<th>가격</th>"
+	  		bList += "<th>출판사</th>"
+	  		bList +="</tr>";
+	  		
+	  		bList += "</thead>";
+	  		
+	  		$.each(data.documents, function(index, book){
+	  	         var image = book.thumbnail;
+	  	         var title = book.title;
+	  	         var price = book.price;
+	  	         var url = book.url;
+	  	         var publisher = book.publisher;
+	  	         bList+="<tbody>";
+	  	         bList+="<tr>";
+	  	         bList+="<td><a href = '"+url+"'><img src='"+image+"' width='50px' heiht='60px'/></a></td>";
+	  	         bList+="<td>"+title+"</td>";
+	  	         bList+="<td>"+price+"</td>";
+	  	         bList+="<td>"+publisher+"</td>";
+	  	         bList+="</tr>";
+	  	         bList+="</tbody>";
+
+	  	      });  // each함수(반복문) 반복문으로 돌면서 하나씩 가져와줌 => data의 documents에 검색되어있는 여러개의 책들을 가져와야함
+	 	  		
+	  	      bList += "</table>";
+	  		
+	  		
+	  		$("#bookList").html(bList);
+	  		
+	  	}
+	  	
 		function goMsg(){
-			$("#myModal").modal("show");			
+			$("#myModal").modal("show");
 
 		}
 	</script>
@@ -187,7 +270,9 @@
 								</c:if>
   							</ul>					
   							<form id = "pageForm" action = "${cpath}/list" method = post>
-  								<input type = "hidden" id = page name = page value = "${pm.cri.page}"/>
+  								<input type = "hidden" id = "page" name = "page" value = "${pm.cri.page}"/>
+  								<input type = "hidden" id = "type" name = "type" value = "${pm.cri.type}"/>
+  								<input type = "hidden" id = "keyword" name = "keyword" value = "${pm.cri.keyword}"/>
   							</form>
 							<!-- 페이지 리스트 출력 끝 -->
 							

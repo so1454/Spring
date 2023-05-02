@@ -22,6 +22,21 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <link rel = "stylesheet" href="${cpath}/resources/css/style.css">
+  
+  <script type="text/javascript">
+  	$(document).ready(function(){
+  		
+  		$("#list").click(function(){  // 함수안에 함수가 있는 것을 익명함수라고함
+  			var frm = $("#frm");
+  			frm.attr("action","${cpath}/list"); // ?num=1&page=1&type=writer&keyword=XXX 이런식으로 넘어감
+  			frm.submit();
+  			
+  		});
+
+  	});
+  </script>
+  
+  
 </head>
 <body>
  
@@ -51,9 +66,11 @@
 					<div class = "card-body">
 						<h4 class = "card-title">BOARD</h4>
 						<p class = "card-text">게시판 수정하기</p>
-							<form action="${cpath}/modify" method = "post">
+							<form id = "frm" action="${cpath}/modify" method = "post">
 								<input type = "hidden" name = "page" value = "${cri.page}"/>
 								<input type = "hidden" name = "num" value = "${vo.num}"/>
+								<input type = "hidden" name = "type" value = "${cri.type}"/>
+								<input type = "hidden" name = "keyword" value = "${cri.keyword}"/>
 								<div class = "form-group">
 									<label>제목</label>
 										<input type = "text" name = "title" value="${vo.title}" id = "title" class = "form-control"/>
@@ -66,7 +83,7 @@
 								
 								
 								<br>
-								<button type = "button" class="btn btn-primary btn-sm" onclick = "location.href ='${cpath}/list?&page=${cri.page}'">목록</button>
+								<button id = "list" type = "button" class="btn btn-primary btn-sm">목록</button>
 								<button type = "submit" class="btn btn-primary btn-sm" >수정</button>
 								<button type = "reset" class="btn btn-primary btn-sm">취소</button>
 							</form>

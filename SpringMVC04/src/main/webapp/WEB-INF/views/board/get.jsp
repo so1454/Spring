@@ -130,8 +130,8 @@
 								얘를 사용하면 쿼리스트링 사용없이 더 깔끔하게 넘겨줄 수 있다.-->
 								<input type = "hidden" name ="num" id = "num" value ="${vo.num}"/>
 								<input type = "hidden" name ="page" value ="${cri.page}"/>
-								
-								
+								<input type = "hidden" name ="type" value ="${cri.type}"/>
+								<input type = "hidden" name ="keyword" value ="${cri.keyword}"/>
 							</form>
 						
 					</div>
