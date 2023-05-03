@@ -26,5 +26,6 @@
     </form>
     
     <div id = "result">여기에 결과 이미지를 출력</div>
+    
   </div>
 </div>

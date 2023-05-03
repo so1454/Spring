@@ -110,37 +110,25 @@
 			
 			
 			//Python과 연동하는 부분
-			$("#python").click(function( ) {
-				var form = $("#fileFrm")
-			 	var data = new form FormData(form); // name = data(text), name = file(binary) // 이진데이터
-				$("#python").prop("disabled",true); // prop => property
-				$.ajax({
-					url : "http://127.0.01:5000/test",  // flask server연동 url
-					type : "post",
-					data : data, // var data 되어있는 위의 formData!를 데이터로 받아줌
-					processData : false ,
-					contentType : false ,
-					cache : false,
-					timeout : 60000, // 서버에 업로드될떄 업로드의 시간을 이정도를 넘어가면 timeout이 걸리도록 해주는거
-										// 1000=> 1초 60000=> 60초
-					success : function(data){
-						//이미지 출력코드
-						
-						
-					},
-					error : function(){alert("error");}
-					
-					
-					
-					
-				});
-			});
-			
-			
-			
-			
-			
-			
+			 $("#python").click(function(){
+		           var form=$("#fileFrm")[0]; // form data의 0번 폼을 가지고옴
+		            var data=new FormData(form); // name=data(text), name=file(binary) 
+		            $.ajax({
+		               url : "http://127.0.0.1:5000/test", // flask server연동 url
+		               type : "post",
+		               data : data,    // var data 되어있는 위의 formData!를 데이터로 받아줌
+		               processData : false,
+		               contentType : false,
+		               cache : false,
+		               timeout : 60000, // 서버에 업로드될떄 업로드의 시간을 이정도를 넘어가면 timeout이 걸리도록 해주는거
+						// 1000=> 1초 60000=> 60초
+		               
+		               success : function(data){ 
+		                  $("#result").html("<img width='200px' height='200px' src='data:image/png;base64," + data.file + "'>");                                 
+		               },
+		               error : function(){ alert("error"); }
+		            });
+		        });
 			
 
 		   });
