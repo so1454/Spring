@@ -54,7 +54,8 @@
 					         <a type="button" class="btn btn-secondary" id = "mapsearch">Go</a>
 					       </div>
 					    </div>
-				    <div id="map" style="width:100%; height: 150px"></div>
+					    
+				   <div id="map" style="width:100% ;height:150px;"></div>
 				</div>
 			</div> <!-- col_end -->
 		</div> <!-- row_end -->

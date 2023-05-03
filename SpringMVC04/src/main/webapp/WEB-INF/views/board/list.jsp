@@ -22,7 +22,9 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
+  
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=601c55e649e826d085e921f3e54e4c7a"></script>
+	
 	<script type="text/javascript">
 	  	$(document).ready(function(){
 	  		var pageForm= $("#pageForm")  // 폼의 아이디를 담아준 변수
@@ -93,9 +95,54 @@
 		      console.log(data);
 		      var x= data.documents[0].x; //경도
 		      var y = data.documents[0].y; // 위도
+		     // var location = data.documents[0].address_name;
 		      console.log(x);
 		      console.log(y);
-		   }
+
+			  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			  mapOption = { 
+			      center: new kakao.maps.LatLng(y, x), // 지도의 중심좌표
+			      level: 3 // 지도의 확대 레벨
+			  };
+
+		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+			  var map = new kakao.maps.Map(mapContainer, mapOption); 
+		      
+		      // 여기서 주의할점은 우리 ip 주로 해서 사이트를 들어가서 검색해줘야함
+		      
+		      
+			// 마커가 표시될 위치입니다 
+			  var markerPosition  = new kakao.maps.LatLng(y, x); 
+
+			  // 마커를 생성합니다
+			  var marker = new kakao.maps.Marker({
+			      position: markerPosition,
+			      clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+			  });
+
+			  // 마커가 지도 위에 표시되도록 설정합니다
+			  marker.setMap(map);
+		      
+			// 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+			  var iwContent = '<div style="padding:5px;">Name(${mvo.name})</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+			  // 인포윈도우를 생성합니다
+			  var infowindow = new kakao.maps.InfoWindow({
+			      content : iwContent,
+			      removable : iwRemoveable
+			  });
+
+			  // 마커에 클릭이벤트를 등록합니다
+			  kakao.maps.event.addListener(marker, 'click', function() {
+			        // 마커 위에 인포윈도우를 표시합니다
+			        infowindow.open(map, marker);  
+			  });
+			  
+		
+		   };
+		   
+		   
 	
 	  	function bookPrint(data){  // 위 callback함수를 밑에 만들어줌
 	  		console.log(data);  // 구조 어떻게 프린트 되는지 확인
@@ -139,6 +186,13 @@
 			$("#myModal").modal("show");
 
 		}
+		
+
+
+		
+		
+		
+		
 	</script>
 
 
