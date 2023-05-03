@@ -89,13 +89,97 @@
 		         });
 		      });
 		         
-		   
+			
+			// 버튼을 클릭해서 서버로 게시판 리스트 가져오기 요청을 하고, 
+			// 응답받은 데이터를 이용해서 게시판 리스트를 출력
+			
+			$("#ajaxList").click(function(){
+				  $.ajax({ 
+					  url : "${cpath}/ajaxlist",  // 어디에서 받아올껀지 (Boardcontroller부분)
+					  type : "get",    // 요청 타입
+					  dataType : "json",  // 받는 타임 HTML, xml 형식 가능
+					  success : ajaxList,  // 밑의 함수
+					  error : function(){
+						  alert("error");
+					  }
+					  
+					  
+				  });
+				 
+			});
+			
+			
+			//Python과 연동하는 부분
+			$("#python").click(function( ) {
+				var form = $("#fileFrm")
+			 	var data = new form FormData(form); // name = data(text), name = file(binary) // 이진데이터
+				$("#python").prop("disabled",true); // prop => property
+				$.ajax({
+					url : "http://127.0.01:5000/test",  // flask server연동 url
+					type : "post",
+					data : data, // var data 되어있는 위의 formData!를 데이터로 받아줌
+					processData : false ,
+					contentType : false ,
+					cache : false,
+					timeout : 60000, // 서버에 업로드될떄 업로드의 시간을 이정도를 넘어가면 timeout이 걸리도록 해주는거
+										// 1000=> 1초 60000=> 60초
+					success : function(data){
+						//이미지 출력코드
+						
+						
+					},
+					error : function(){alert("error");}
+					
+					
+					
+					
+				});
+			});
+			
+			
+			
+			
+			
+			
+			
+
 		   });
+	  		
+	  		function ajaxList(data){
+				var aList = "<table class = 'table table-hover'>";
+				aList +="<thead>";
+				aList +="<tr>";
+				aList +="<th>번호</th>";
+				aList +="<th>제목</th>";
+				aList +="<th>작성자</th>";
+				aList +="<th>조회수</th>";
+				aList +="</tr>";
+				aList +="</thead>";
+				
+				$.each(data, function(index,board){
+					aList +="<tr>";
+					aList +="<td>"+board.num+"</td>";
+					aList +="<td>"+board.title+"</td>";
+					aList +="<td>"+board.wirter+"</td>";
+					aList +="<td>"+board.indate+"</td>";
+					aList +="<td>"+board.count+"</td>";
+					aList +="</tr>";
+				});
+				
+				aList +="</table>";
+	  			$("#boardList").html(aList);
+	  			if($("#boardList").css("display") == "none"){
+	  				$("#boardList").css("display","block");
+	  			}else{
+	  				$("#boardList").css("display","none");
+	  			}
+	  		}
+	  	
 		   function mapPrint(data){
 		      console.log(data);
 		      var x= data.documents[0].x; //경도
 		      var y = data.documents[0].y; // 위도
-		     // var location = data.documents[0].address_name;
+		      var location = data.documents[0].address_name;
 		      console.log(x);
 		      console.log(y);
 
@@ -124,7 +208,7 @@
 			  marker.setMap(map);
 		      
 			// 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-			  var iwContent = '<div style="padding:5px;">Name(${mvo.name})</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			  var iwContent = '<div style="padding:5px;"> 주소 : '+ location +'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 			      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
 			  // 인포윈도우를 생성합니다
@@ -340,8 +424,13 @@
 						<c:if test ="${!empty mvo}"> <!-- 로그인을 했을때 글쓰기 버튼이 나오도록함 -->
 						<button class="btn btn-success btn-sm" onclick = "location.href = '${cpath}/register'">글쓰기</button>
 						</c:if>
-					</div>
+						<button id = "ajaxList" class = "btn btn-warning btn-sm">데이터 가져오기(Ajax_JSON)</button>
+					</div> 
 				</div>
+				
+				<!-- Ajax 게시판 출력부분 -->
+				<div id = "boardList" style = "display:none"></div>
+				
 			</div>
     		<div class = "col-lg-3">
 				<jsp:include page="right.jsp"/>

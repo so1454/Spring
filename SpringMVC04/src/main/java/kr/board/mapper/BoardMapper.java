@@ -69,7 +69,8 @@ public interface BoardMapper { //Dao말고 연결한다는거 -> mapper라고 �
 //	@Select("select count(*) from reply")  여기도 sql문에서 수정 해줌
 	public int totalCount(Criteria cri);  // 어떤 타입/ 어떤 키워드로 검색을 할껀지에 따라서 전체 개수가 설정이 되니까
 							// 검색어 입력을 위해 이 부분이 변경되어야함
-	
+	@Select("select * from reply order by num desc")
+	public List<Board> ajaxList();
 	
 	
 }
